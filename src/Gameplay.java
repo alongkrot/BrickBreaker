@@ -38,18 +38,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     public Gameplay() {
         map = new MapGenerator(3, 7);
-        addKeyListener(this);
-        setFocusable(true);
+        addKeyListener(this); //Interface ในการ ดักฟังเหตุการณ์ ของการทำงานของ keyboard
+        setFocusable(true); //ใช้กำหนดว่า view สามารถ ได้รับ focus หรือไม่
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
     }
 
     public void paint(Graphics g) {
-
         //background
         g.setColor(Color.black);
-        g.fillRect(1, 1, 692, 592);
+        g.fillRect(1, 1, 692, 592); //ใช้วาดรูปสี่เหลี่ยมจากจุด x,y
 
         //drawing map
         map.draw((Graphics2D)g);
@@ -72,8 +71,35 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.white);
         g.setFont(new Font("serif", Font.BOLD, 25));
         g.drawString(""+score, 590, 30);
-    }
 
+        //ข้อความจบเกมเเบทำลาย pad ทั่้งหมด
+        if (totalBricks <= 0) {
+                    play = false;
+                    ballXdir = 0;
+                    ballYdir = 0;
+                    g.setColor(Color.RED);
+                    g.setFont(new Font("serif", Font.BOLD, 30));        
+                    g.drawString("You Win", 260, 300); 
+        
+                    //ข้อความเริ่มเกมใหม่
+                    g.setFont(new Font("serif", Font.BOLD, 20));
+                    g.drawString("press Enter to Restart ", 230, 350); 
+        }
+
+        //ข้อความ ้าเเพ้ ทำลาย pad ไม่หมด
+        if (ballposY > 570) {
+                    play = false;
+                    ballXdir = 0;
+                    ballYdir = 0;
+                    g.setColor(Color.RED);
+                    g.setFont(new Font("serif", Font.BOLD, 30));        
+                    g.drawString("Game Over, Scores : "+score, 190, 300);
+                
+                    g.setFont(new Font("serif", Font.BOLD, 20));
+                    g.drawString("press Enter to Restart ", 230, 350);           
+        }
+        g.dispose();  
+    }
 
 
     @Override
@@ -84,6 +110,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 ballYdir = -ballYdir;
             }
 
+            //เงื่อนไข MapGenerator
             A: for (int i = 0; i < map.map.length; i++){
                 for (int j = 0; j < map.map[0].length; j++){
                     if (map.map[i][j]>0) {
@@ -100,7 +127,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                             map.setBrickValue(0, i, j);
                             totalBricks--;
                             score += 5;
-
 
                             if(ballposX + 19 <= brickRect.x || ballposX + 1 >= brickRect.x + brickRect.width ){
 								ballXdir = -ballXdir;
@@ -140,19 +166,35 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     
     @Override
     public void keyPressed(KeyEvent e) {
+        //เลื่อนขวา
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (playerX >= 600) {
                 playerX = 600;
             } else {
                 moveRight();
             } 
-
+            //เลื่อนซ้าย
         } if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (playerX < 10) {
                 playerX = 10;
             } else {
                 moveLeft();
-            }  
+            }
+            //even enter เริ่มเกมใหม่
+        } if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (!play) {
+                    play = true;
+                    ballposX = 120;
+                    ballposY = 350;
+                    ballXdir = -1;
+                    ballYdir = -2;
+                    playerX = 310;
+                    score = 0;
+                    totalBricks = 21;
+                    map = new MapGenerator(3, 7);
+
+                    repaint();
+                }  
         }
 
 	} 

@@ -8,8 +8,8 @@ import java.awt.Graphics2D;
 public class MapGenerator {
 
     public int map[][];
-    public int brickWidth;
-    public int brickHeight;
+    public int brickWidth; //ความกว้าง pad
+    public int brickHeight; //ความยาว pad
     public MapGenerator(int row, int col) {
         map = new int[row][col];
         for (int i = 0; i < map.length; i++) {
@@ -17,7 +17,6 @@ public class MapGenerator {
                 map[i][j] = 1;
             }
         }
-
         brickWidth = 540/col;
         brickHeight = 150/row;
     }
