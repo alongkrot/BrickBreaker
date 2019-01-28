@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     private boolean play = false;
+    private int score = 0;
  
     private int totalBricks = 21;
 
@@ -66,6 +67,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         //the ball
         g.setColor(Color.red);
         g.fillOval(ballposX, ballposY, 20, 20);
+
+        //scores
+        g.setColor(Color.white);
+        g.setFont(new Font("serif", Font.BOLD, 25));
+        g.drawString(""+score, 590, 30);
     }
 
 
@@ -93,6 +99,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                         if(ballRect.intersects(brickRect)) {
                             map.setBrickValue(0, i, j);
                             totalBricks--;
+                            score += 5;
 
 
                             if(ballposX + 19 <= brickRect.x || ballposX + 1 >= brickRect.x + brickRect.width ){
