@@ -129,11 +129,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                             score += 5;
 
                             if(ballposX + 19 <= brickRect.x || ballposX + 1 >= brickRect.x + brickRect.width ){
-								ballXdir = -ballXdir;
-                                
+			       ballXdir = -ballXdir;    
                             }else{
-								ballYdir = -ballYdir;
-							}
+				ballYdir = -ballYdir;
+			    }
                             break A;                          
                         }  
                     }
